@@ -1,0 +1,24 @@
+<ion-item *ngIf="cryptoItem" [routerLink]="'/details/' + cryptoItem.id" [detail]="false">
+    <ion-img slot="start" [src]="metaData?.image.small" style="height: 40px;width: 40px;border-radius: 50%;"></ion-img>
+  <ion-label class="ion-text-wrap">
+    <h2>
+      {{ cryptoItem.name }}
+      <span class="price">
+        <ion-note>&#8377; {{ metaData?.market_data.current_price.inr}}</ion-note>
+      </span>
+    </h2>
+    <h3 class="sub-section">
+      {{ cryptoItem.symbol }}
+      <span *ngIf="metaData" [class]="metaData?.market_data.price_change_percentage_24h > 0 ? 'price-up' : 'price-down'">
+        <ion-icon name="caret-up-outline" style="color:green" *ngIf="metaData?.market_data.price_change_percentage_24h > 0 "></ion-icon>
+        <ion-icon name="caret-down-outline" style="color:red" *ngIf="metaData?.market_data.price_change_percentage_24h < 0 "></ion-icon>  {{cNumber(metaData?.market_data.price_change_percentage_24h).toFixed(2)}}%
+      </span>
+    </h3>
+    <!-- <span>
+      (Last 24 Hours)
+    </span> -->
+    <!-- <p>
+      {{ metaData?.description.en}}
+    </p> -->
+  </ion-label>
+  </ion-item>
