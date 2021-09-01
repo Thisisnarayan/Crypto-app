@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService , CryptoList } from '../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  constructor(private data: DataService) {
 
-  constructor() {}
+  }
+
+  refresh(ev) {
+    setTimeout(() => {
+      ev.detail.complete();
+    }, 3000);
+  }
+
+  getCrypto(): CryptoList[] {
+    return this.data.getCryptoList();
+  }
 
 }

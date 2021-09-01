@@ -1,0 +1,72 @@
+<ion-content [fullscreen]="true">
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 5px">
+    <div fxLayout="row">
+      <ion-buttons slot="start">
+        <ion-back-button
+          [text]="getBackButtonText()"
+          defaultHref="/"
+        ></ion-back-button>
+      </ion-buttons>
+      <div>
+        <h3>
+          {{ cryptoDetail.symbol | uppercase }}
+        </h3>
+      </div>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      style="
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        align-items: center;
+        border: 1px solid #dee2e6;
+      "
+    >
+      <ion-icon name="star-outline"></ion-icon>
+    </div>
+  </div>
+  <div fxLayout="row" style="padding: 15px">
+    <div style="height: 40px; width: 40px; border: 1px solid #dee2e6">
+      <ion-img slot="start" [src]="cryptoDetail.image.small" style="padding: 5px;"></ion-img>
+    </div>
+
+    <ion-label class="ion-text-wrap" style="padding-left: 15px;">
+      <span style="font-size: 11px;color: #6b778c">Current Price</span>
+      <h2 class="sub-section">
+        &#8377; {{ cryptoDetail.market_data.current_price.inr }}
+        <span
+          *ngIf="cryptoDetail"
+          [class]="
+            cryptoDetail?.market_data.price_change_percentage_24h > 0
+              ? 'price-up'
+              : 'price-down'
+          "
+        >
+          <ion-icon
+            name="caret-up-outline"
+            style="color: green"
+            *ngIf="cryptoDetail?.market_data.price_change_percentage_24h > 0"
+          ></ion-icon>
+          <ion-icon
+            name="caret-down-outline"
+            style="color: red"
+            *ngIf="cryptoDetail?.market_data.price_change_percentage_24h < 0"
+          ></ion-icon>
+          {{
+            cNumber(
+              cryptoDetail?.market_data.price_change_percentage_24h
+            ).toFixed(2)
+          }}%
+        </span>
+      </h2>
+      <!-- <span>
+      (Last 24 Hours)
+    </span> -->
+      <!-- <p>
+      {{ metaData?.description.en}}
+    </p> -->
+    </ion-label>
+  </div>
+</ion-content>
