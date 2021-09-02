@@ -1,0 +1,58 @@
+.price {
+  align-items: center;
+  display: flex;
+}
+
+.price-up {
+  align-items: center;
+  color: green;
+  display: flex;
+}
+
+.fav {
+  color: #3880ff;
+}
+
+.not-fav {
+  color: #92949c;
+}
+.price-down {
+  float: right;
+  color: red;
+  align-items: center;
+  display: flex;
+}
+
+.detail-caption {
+  font-family: inherit;
+  font-size: 11px;
+  color: #6b778c;
+}
+
+.detail-caption-price {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.m-l-10 {
+  margin-left: 10px;
+}
+
+.crypto-fav-icon {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  align-items: center;
+  border: 1px solid #dee2e6;
+}
+
+.spinner {
+  margin-top: 150px;
+  height: 100px;
+  width: 100px;
+}
+
+.sub-price-section {
+  padding-left: 15px;
+  padding-right: 15px;
+}

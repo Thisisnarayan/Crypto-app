@@ -1,7 +1,16 @@
 
   <div id="main" class="graph" (window:resize)="onResize($event)"></div>
   <div fxLayout="row" fxLayoutAlign="space-between center" >
-    <ion-button color="light">Last week</ion-button>
-    <ion-button color="light">Last Month</ion-button>
-    <ion-button color="light">Last 3 Month</ion-button>
+    <ion-button [color]="selected === 1 ? 'primary': 'light'" (click)="dateFilter(moment().subtract(1, 'weeks').startOf('week'),moment().subtract(1, 'weeks').endOf('week'),1)">
+      Last week
+    </ion-button>
+    <ion-button [color]="selected === 2 ? 'primary': 'light'" (click)="dateFilter(moment().subtract(1, 'months').startOf('month'),moment().subtract(1, 'months').endOf('month'),2)">
+      Last Month
+    </ion-button>
+    <ion-button [color]="selected === 3 ? 'primary': 'light'" 
+    (click)="
+    dateFilter(moment().subtract(3, 'months').startOf('month'),
+    moment(),3)">
+    Last 3 Month
+  </ion-button>
   </div>

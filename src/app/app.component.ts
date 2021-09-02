@@ -21,6 +21,7 @@ export class AppComponent {
       this.onlineEvent.subscribe(e => {
         console.log('Online...');
         this.util.showToastMessage('','Device is online','#f0f0f0');
+        this.util.networkStatus = true;
         this.util.deviceNetworkStatus$.next(true);
       }),
     );
@@ -28,6 +29,7 @@ export class AppComponent {
     this.subscriptions.push(
       this.offlineEvent.subscribe(e => {
         this.util.showToastMessage('','Connection lost! Device is offline','#f0f0f0');
+        this.util.networkStatus = false;
         this.util.deviceNetworkStatus$.next(false);
         console.log('Offline...');
       }),

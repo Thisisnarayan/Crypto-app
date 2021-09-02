@@ -3,7 +3,16 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>  
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <ion-searchbar showCancelButton="never"
+    (keyup)="searchTerm$.next($event.target.value)"
+    [(ngModel)]="searchedQuery"
+    ></ion-searchbar>
+    <div fxLayout="row" fxLayoutAlign="center center" class="home-filter">
+      <ion-icon name="filter-outline" (click)="presentActionSheet()"></ion-icon>
+    </div>
+  </div>
   <ion-list>
-    <app-crypto-list *ngFor="let crypto of getCrypto()"  [cryptoItem]="crypto"></app-crypto-list>
+    <app-crypto-list *ngFor="let crypto of cryptoList"  [cryptoItem]="crypto"></app-crypto-list>
   </ion-list>
 </ion-content>
