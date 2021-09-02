@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import * as moment from 'moment';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 @Component({
   selector: 'app-details-container',
@@ -11,13 +12,16 @@ import * as moment from 'moment';
 export class DetailsContainerComponent implements OnInit {
   cryptoDetail: any;
   cNumber = Number;
+  chartData: any;
   constructor(
     private data: DataService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dbService: NgxIndexedDBService
   ) {}
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    const id = this.activatedRoute.snapshot.paramMap.get('cryptoid');
+    const dbId = this.activatedRoute.snapshot.paramMap.get('dbid');
     this.cryptoDetail = this.data.cryptoListDataMap.get(id);
     this.data
       .getMarketChart(
@@ -26,7 +30,19 @@ export class DetailsContainerComponent implements OnInit {
         moment().unix()
       )
       .subscribe(
-        (res: any) => {},
+        (res: any) => {
+          this.chartData = res;
+          this.dbService
+            .update('crypto', {
+              id: +dbId,
+              name: this.cryptoDetail.id,
+              symbol: this.cryptoDetail.symbol,
+              metaData: this.cryptoDetail,
+              pricesChart: res.prices,
+              volumeChart: res.total_volumes,
+            })
+            .subscribe((storeData) => {});
+        },
         (error: any) => {}
       );
   }

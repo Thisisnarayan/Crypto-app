@@ -228,7 +228,7 @@ export class DataService {
   public getCryptoMetaData(id): Observable<any> {
     return this.http.get(
       `${CONSTANTS.serverurl}/api/v3/coins/${id}?localization=false&tickers=false&market_data=
-      true&community_data=false&developer_data=false&sparkline=true`,
+      true&community_data=false&developer_data=false&sparkline=false`,
       (this.httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

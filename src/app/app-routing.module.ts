@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'details/:id',
+    path: 'details/:cryptoid/:dbid',
     loadChildren: () => import('./crypto-details/crypto-details.module').then( m => m.CryptoDetailsModule)
   },
   {

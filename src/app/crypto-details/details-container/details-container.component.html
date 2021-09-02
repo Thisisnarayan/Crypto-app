@@ -28,7 +28,7 @@
     </div>
   </div>
   <div fxLayout="row" style="padding: 15px">
-    <div style="height: 40px; width: 40px; border: 1px solid #dee2e6">
+    <div style="height: 40px; width: 40px; border: 1px solid #dee2e6;margin-top:5px">
       <ion-img slot="start" [src]="cryptoDetail.image.small" style="padding: 5px;"></ion-img>
     </div>
 
@@ -61,12 +61,23 @@
           }}%
         </span>
       </h2>
-      <!-- <span>
-      (Last 24 Hours)
-    </span> -->
-      <!-- <p>
-      {{ metaData?.description.en}}
-    </p> -->
     </ion-label>
   </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="padding-left: 15px;padding-right: 15px;">
+    <div>
+      <span style="font-size: 11px;color: #6b778c;font-weight: normal;">24H Highest</span>
+      <span style="font-size: 12px;font-weight: 500;
+      margin-left: 10px;">&#8377; {{cryptoDetail.market_data.low_24h.inr}}</span>
+    </div>
+    <span  style="color: #6b778c;font-weight: normal;">|</span>
+    <div>
+      <span style="font-size: 11px;color: #6b778c;font-weight: normal;">24H Lowest</span>
+      <span style="font-size: 12px;font-weight: 500;
+      margin-left: 10px;">&#8377; {{cryptoDetail.market_data.high_24h.inr}}</span>
+    </div>
+  </div>
+  <div>
+    <app-price-vloume-chart [volumeData]="chartData.total_volumes" [priceData]="chartData.prices"></app-price-vloume-chart>
+  </div>
+  
 </ion-content>

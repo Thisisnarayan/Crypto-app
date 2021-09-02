@@ -12,6 +12,7 @@ export class CryptoListComponent implements OnInit {
   @Input() cryptoItem: any;
   cNumber = Number;
   metaData: any;
+  dbid: any = null;
   constructor(
     private data: DataService,
     private dbService: NgxIndexedDBService
@@ -32,6 +33,7 @@ export class CryptoListComponent implements OnInit {
         if (res !== undefined && res !== null) {
           const currentdate = new Date().getTime();
           if (res.metaData !== undefined) {
+            this.dbid = res.id;
             const latUpdateDate = new Date(
               res.metaData.last_updated_at_local
             ).getTime();
@@ -70,8 +72,10 @@ export class CryptoListComponent implements OnInit {
         })
         .subscribe((key) => {
           console.log('key: ', key);
+          this.dbid = key;
         });
     } else {
+      this.dbid = item.id;
       this.dbService
         .update('crypto', {
           id: item.id,
@@ -79,8 +83,7 @@ export class CryptoListComponent implements OnInit {
           symbol: this.cryptoItem.symbol,
           metaData: this.metaData,
         })
-        .subscribe((storeData) => {
-          console.log('storeData: ', storeData);
+        .subscribe((storeData: any) => {
         });
     }
   }
