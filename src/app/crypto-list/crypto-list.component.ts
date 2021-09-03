@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { CONSTANTS } from '../CONSTANTS';
+import { UtilService } from '../services/util.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-crypto-list',
@@ -12,9 +14,12 @@ export class CryptoListComponent implements OnInit {
   @Input() cryptoItem: any;
   cNumber = Number;
   metaData: any;
+  dbid: any = null;
+  moment = moment;
   constructor(
     private data: DataService,
-    private dbService: NgxIndexedDBService
+    private dbService: NgxIndexedDBService,
+    private util: UtilService
   ) {}
 
   ngOnInit() {
@@ -32,6 +37,8 @@ export class CryptoListComponent implements OnInit {
         if (res !== undefined && res !== null) {
           const currentdate = new Date().getTime();
           if (res.metaData !== undefined) {
+            this.metaData = res.metaData;
+            this.dbid = res.id;
             const latUpdateDate = new Date(
               res.metaData.last_updated_at_local
             ).getTime();
@@ -57,31 +64,40 @@ export class CryptoListComponent implements OnInit {
       });
   }
 
+  /**
+   * if metadata of crypto is not present in local db then call api and update in localdb.
+   *
+   * @param  item object with id if previously added or null value.
+   *
+   */
   async callMetaData(item) {
-    this.metaData = await this.data.metaUpdate(this.cryptoItem.id);
-    this.metaData.last_updated_at_local = new Date();
-    this.data.cryptoListDataMap.set(this.cryptoItem.id, this.metaData);
-    if (item == null) {
-      this.dbService
-        .add('crypto', {
-          name: this.cryptoItem.id,
-          symbol: this.cryptoItem.symbol,
-          metaData: this.metaData,
-        })
-        .subscribe((key) => {
-          console.log('key: ', key);
-        });
-    } else {
-      this.dbService
-        .update('crypto', {
-          id: item.id,
-          name: this.cryptoItem.id,
-          symbol: this.cryptoItem.symbol,
-          metaData: this.metaData,
-        })
-        .subscribe((storeData) => {
-          console.log('storeData: ', storeData);
-        });
+    if (this.util.networkStatus) {
+      this.metaData = await this.data.metaUpdate(this.cryptoItem.id);
+      this.metaData.last_updated_at_local = new Date();
+      this.metaData.fav = false;
+      this.data.cryptoListDataMap.set(this.cryptoItem.id, this.metaData);
+      if (item == null) {
+        this.dbService
+          .add('crypto', {
+            name: this.cryptoItem.id,
+            symbol: this.cryptoItem.symbol,
+            metaData: this.metaData,
+          })
+          .subscribe((key) => {
+            console.log('key: ', key);
+            this.dbid = key;
+          });
+      } else {
+        this.dbid = item.id;
+        this.dbService
+          .update('crypto', {
+            id: item.id,
+            name: this.cryptoItem.id,
+            symbol: this.cryptoItem.symbol,
+            metaData: this.metaData,
+          })
+          .subscribe((storeData: any) => {});
+      }
     }
   }
 }

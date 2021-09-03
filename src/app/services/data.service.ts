@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { Observable } from 'rxjs';
 import { CONSTANTS } from '../CONSTANTS';
 
@@ -73,6 +74,13 @@ export class DataService {
       description: '',
     },
     {
+      id: 'axie-infinity',
+      symbol: 'axs',
+      name: 'axie infinity',
+      price: null,
+      description: '',
+    },
+    {
       id: 'chiliz',
       symbol: 'chz',
       name: 'Chiliz',
@@ -87,13 +95,6 @@ export class DataService {
       description: '',
     },
     {
-      id: 'binance-peg-litecoin',
-      symbol: 'ltc',
-      name: 'Binance-Peg Litecoin',
-      price: null,
-      description: '',
-    },
-    {
       id: 'addax',
       symbol: 'adx',
       name: 'Addax',
@@ -101,9 +102,16 @@ export class DataService {
       description: '',
     },
     {
-      id: 'addict-finance',
-      symbol: 'addict',
-      name: 'Addict Finance',
+      id: 'nano',
+      symbol: 'nano',
+      name: 'nano',
+      price: null,
+      description: '',
+    },
+    {
+      id: 'elrond-erd-2',
+      symbol: 'egld',
+      name: 'elrond',
       price: null,
       description: '',
     },
@@ -115,16 +123,9 @@ export class DataService {
       description: '',
     },
     {
-      id: 'adelphoi',
-      symbol: 'adl',
-      name: 'Adelphoi',
-      price: null,
-      description: '',
-    },
-    {
-      id: '1x-short-eos-token',
-      symbol: 'eoshedge',
-      name: '1X Short EOS Token',
+      id: 'swipe',
+      symbol: 'sxp',
+      name: 'swipe',
       price: null,
       description: '',
     },
@@ -150,9 +151,9 @@ export class DataService {
       description: '',
     },
     {
-      id: 'bishoku-inu',
-      symbol: 'bishoku',
-      name: 'Bishoku Inu',
+      id: 'vechain',
+      symbol: 'VET',
+      name: 'VeChain',
       price: null,
       description: '',
     },
@@ -160,27 +161,6 @@ export class DataService {
       id: 'angryb',
       symbol: 'anb',
       name: 'Angryb',
-      price: null,
-      description: '',
-    },
-    {
-      id: '1x-short-ethereum-token',
-      symbol: 'ethhedge',
-      name: '1X Short Ethereum Token',
-      price: null,
-      description: '',
-    },
-    {
-      id: '1x-short-exchange-token-index-token',
-      symbol: 'exchhedge',
-      name: '1X Short Index Token',
-      price: null,
-      description: '',
-    },
-    {
-      id: '420x',
-      symbol: '420x',
-      name: '420x',
       price: null,
       description: '',
     },
@@ -208,10 +188,13 @@ export class DataService {
   ];
 
   cryptoListDataMap = new Map<string, any>();
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private dbService: NgxIndexedDBService
+  ) {}
 
   public getCryptoList(): CryptoList[] {
-    return this.cryptolist;
+    return [...this.cryptolist];
   }
 
   public getCryptoSimplePrice(ids, currencies): Observable<any> {
@@ -228,7 +211,7 @@ export class DataService {
   public getCryptoMetaData(id): Observable<any> {
     return this.http.get(
       `${CONSTANTS.serverurl}/api/v3/coins/${id}?localization=false&tickers=false&market_data=
-      true&community_data=false&developer_data=false&sparkline=true`,
+      true&community_data=false&developer_data=false&sparkline=false`,
       (this.httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -245,7 +228,14 @@ export class DataService {
     });
   }
 
-  public getMarketChart(id,from,to): Observable<any> {
+  /**
+   *  get market chart data
+   *
+   *  @param  id crypto id
+   *  @param  from from date unix timestamp
+   *  @param  to to date unix timestamp
+   */
+  public getMarketChart(id, from, to): Observable<any> {
     return this.http.get(
       `${CONSTANTS.serverurl}/api/v3/coins/${id}/market_chart/range?vs_currency=inr&from=${from}&to=${to}`,
       (this.httpOptions = {
@@ -256,6 +246,19 @@ export class DataService {
     );
   }
 
+  /**
+   *  Search crypto data in local db
+   *
+   * @param  id
+   *
+   */
+  public graphDataLocalGet(id) {
+    return new Promise((resolve) => {
+      this.dbService.getByIndex('crypto', 'name', id).subscribe((res: any) => {
+        resolve(res);
+      });
+    });
+  }
   // https://api.coingecko.com/api/v3/ping
   // /v1/cryptocurrency/category
   // /v1/cryptocurrency/quotes/historical

@@ -67,25 +67,24 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
               //  alert('token expired');
               localStorage.clear();
               this.utilService.isLoading.next(false);
-              this.utilService.showToastMessage('Alert!','API key missing.','red');
+              this.utilService.showToastMessage('API key missing.');
               break;
             case 403: // forbidden
-              this.utilService.showToastMessage('Alert!',
+              this.utilService.showToastMessage(
               `Your API Key subscription plan doesn't support this endpoint.`,
-              'red');
+              );
               break;
             case 500:
               this.utilService.isLoading.next(false);
-              this.utilService.showToastMessage('Alert!','Internal Server Error! Something bad happened.','red');
+              this.utilService.showToastMessage('Internal Server Error! Something bad happened.');
               this.utilService.errorComponent$.next(500);
               break;
             case 503:
               // 503 Service Unavailable
               this.utilService.isLoading.next(false);
-              this.utilService.showToastMessage('Alert!','Service Unavailable.','red');
+              this.utilService.showToastMessage('Service Unavailable.');
               break;
             case 404:
-              // window.location.href = result;
               break;
             case 502:
               this.utilService.errorComponent$.next(502);
@@ -93,13 +92,12 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             case 429:
                 // too many requests
                 this.utilService.errorComponent$.next(429);
-                this.utilService.showToastMessage('Alert!',
-                `You've exceeded your API Key's HTTP request rate limit. Rate limits reset every minute.`,
-                'red');
+                this.utilService.showToastMessage(
+              `You've exceeded your API Key's HTTP request rate limit. Rate limits reset every minute.`,);
                 break;
             case 504:
               this.utilService.isLoading.next(false);
-              this.utilService.showToastMessage('Alert!',`your're offline check your connection and try again.`,'red');
+              this.utilService.showToastMessage(`your're offline check your connection and try again.`);
               this.utilService.errorComponent$.next(504);
               // network retry page
               break;

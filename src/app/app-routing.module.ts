@@ -4,10 +4,16 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
+    data: {
+      preload: true
+  },
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'details/:id',
+    path: 'details/:cryptoid/:dbid',
+    data: {
+      preload: true
+  },
     loadChildren: () => import('./crypto-details/crypto-details.module').then( m => m.CryptoDetailsModule)
   },
   {
@@ -19,7 +25,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules ,
+      scrollPositionRestoration: 'enabled'
+     })
   ],
   exports: [RouterModule]
 })

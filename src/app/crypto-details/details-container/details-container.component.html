@@ -16,24 +16,18 @@
     <div
       fxLayout="row"
       fxLayoutAlign="center center"
-      style="
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        align-items: center;
-        border: 1px solid #dee2e6;
-      "
+      class="crypto-fav-icon"
     >
-      <ion-icon name="star-outline"></ion-icon>
+      <ion-icon (click)="setFav(!this.cryptoDetail?.fav)" name="star-outline" [class]="this.cryptoDetail?.fav ? 'fav' : 'not-fav'"></ion-icon>
     </div>
   </div>
   <div fxLayout="row" style="padding: 15px">
-    <div style="height: 40px; width: 40px; border: 1px solid #dee2e6">
+    <div style="height: 40px; width: 40px; border: 1px solid #dee2e6;margin-top:5px">
       <ion-img slot="start" [src]="cryptoDetail.image.small" style="padding: 5px;"></ion-img>
     </div>
 
     <ion-label class="ion-text-wrap" style="padding-left: 15px;">
-      <span style="font-size: 11px;color: #6b778c">Current Price</span>
+      <span class="detail-caption">Current Price</span>
       <h2 class="sub-section">
         &#8377; {{ cryptoDetail.market_data.current_price.inr }}
         <span
@@ -61,12 +55,44 @@
           }}%
         </span>
       </h2>
-      <!-- <span>
-      (Last 24 Hours)
-    </span> -->
-      <!-- <p>
-      {{ metaData?.description.en}}
-    </p> -->
     </ion-label>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="sub-price-section">
+    <div>
+      <span class="detail-caption" >24H Highest</span>
+      <span class="detail-caption-price m-l-10">&#8377; {{cryptoDetail.market_data.low_24h.inr}}</span>
+    </div>
+    <span  style="color: #6b778c;">|</span>
+    <div>
+      <span class="detail-caption">24H Lowest</span>
+      <span class="detail-caption-price m-l-10">&#8377; {{cryptoDetail.market_data.high_24h.inr}}</span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <app-price-vloume-chart *ngIf="chartData; else loadGraph" [volumeData]="chartData?.total_volumes" [priceData]="chartData?.prices"></app-price-vloume-chart>
+    <ng-template #loadGraph>
+      <ion-spinner color="primary" class="spinner"></ion-spinner>
+    </ng-template>
+  </div>
+  <div fxLayout="column">
+    <h2 style="padding: 10px;">About  {{ cryptoDetail.symbol | uppercase }}</h2>
+    <ion-list>
+      <ion-item>
+        <ion-label slot="start">Market Rank</ion-label>
+        <ion-label slot="end">#{{ cryptoDetail?.market_cap_rank}}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label slot="start">Market Cap</ion-label>
+        <ion-label slot="end">&#8377; {{ cryptoDetail?.market_data.market_cap.inr}}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label slot="start">Circulating Supply</ion-label>
+        <ion-label slot="end">{{cryptoDetail?.market_data.circulating_supply}} {{ cryptoDetail.symbol | uppercase }}</ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>

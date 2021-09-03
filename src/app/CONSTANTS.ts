@@ -4,5 +4,5 @@ export class CONSTANTS {
   public static serverurl = 'https://api.coingecko.com';
 
   // in minutes
-  public static dataUpdateInterval = 30;
+  public static dataUpdateInterval = 15;
 }

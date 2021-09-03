@@ -28,6 +28,15 @@ ion-item {
     display: flex;
   }
 
+  .updated-at {
+    float: right;
+    align-items: center;
+    display: flex;
+    font-family: inherit;
+    font-size: 11px;
+    color: #6b778c
+  }
+
   ion-item .price-up {
     float: right;
     align-items: center;

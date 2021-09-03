@@ -22,7 +22,9 @@ const dbConfig: DBConfig  = {
     storeSchema: [
       { name: 'name', keypath: 'name', options: { unique: false } },
       { name: 'symbol', keypath: 'symbol', options: { unique: false }},
-      { name: 'metaData', keypath: 'metaData', options: { unique: false } }
+      { name: 'metaData', keypath: 'metaData', options: { unique: false } },
+      { name: 'pricesChart', keypath: 'prices_chart', options: { unique: false } },
+      { name: 'volumeChart', keypath: 'volume_chart', options: { unique: false } },
     ]
   }]
 };
