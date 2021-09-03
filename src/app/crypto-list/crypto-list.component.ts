@@ -64,6 +64,12 @@ export class CryptoListComponent implements OnInit {
       });
   }
 
+  /**
+   * if metadata of crypto is not present in local db then call api and update in localdb.
+   *
+   * @param  item object with id if previously added or null value.
+   *
+   */
   async callMetaData(item) {
     if (this.util.networkStatus) {
       this.metaData = await this.data.metaUpdate(this.cryptoItem.id);

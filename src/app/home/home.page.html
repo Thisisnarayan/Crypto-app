@@ -1,11 +1,8 @@
 
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>  
   <div fxLayout="row" fxLayoutAlign="start center">
     <ion-searchbar showCancelButton="never"
-    (keyup)="searchTerm$.next($event.target.value)"
+    (keyup)="searchTerm$.next($event)"
     [(ngModel)]="searchedQuery"
     ></ion-searchbar>
     <div fxLayout="row" fxLayoutAlign="center center" class="home-filter">

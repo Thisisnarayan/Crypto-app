@@ -1,5 +1,5 @@
 
-  <div id="main" class="graph" (window:resize)="onResize($event)"></div>
+  <div id="main" class="graph"></div>
   <div fxLayout="row" fxLayoutAlign="space-between center" >
     <ion-button [color]="selected === 1 ? 'primary': 'light'" (click)="dateFilter(moment().subtract(1, 'weeks').startOf('week'),moment().subtract(1, 'weeks').endOf('week'),1)">
       Last week

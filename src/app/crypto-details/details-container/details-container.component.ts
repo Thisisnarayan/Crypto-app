@@ -25,24 +25,28 @@ export class DetailsContainerComponent implements OnInit {
   async ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('cryptoid');
     this.dbId = this.activatedRoute.snapshot.paramMap.get('dbid');
+
+    // used hash map to get previousally stored data
     this.cryptoDetail = this.data.cryptoListDataMap.get(id);
+    // search and get in local indexdb
     const prevAddedData: any = await this.data.graphDataLocalGet(id);
     if (prevAddedData !== null && prevAddedData !== undefined) {
       if (
         prevAddedData.pricesChart !== null &&
         prevAddedData.pricesChart !== undefined
       ) {
+        // if avilable in local db
         this.chartData = {
           prices: prevAddedData.pricesChart,
           // eslint-disable-next-line @typescript-eslint/naming-convention
           total_volumes: prevAddedData.volumeChart,
         };
       } else {
-        // network call
+        // if not avilable in local db then network call
         this.chartData = await this.chartDataGet(id, this.dbId);
       }
     } else {
-      // network call
+      //  // if not avilable in local db then network call
       this.chartData = await this.chartDataGet(id, this.dbId);
     }
   }
@@ -83,6 +87,13 @@ export class DetailsContainerComponent implements OnInit {
     return mode === 'ios' ? 'List' : '';
   }
 
+  /**
+   *
+   * Set favourite to any crypto currency.
+   *
+   * @param  v true / false.
+   *
+   */
   setFav(v) {
     this.cryptoDetail.fav = v;
     this.dbService

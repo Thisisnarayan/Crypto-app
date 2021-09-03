@@ -8,7 +8,10 @@ import * as moment from 'moment';
   styleUrls: ['./price-vloume-chart.component.scss'],
 })
 export class PriceVloumeChartComponent implements OnInit {
+  // property to hold volume data with date
   @Input() volumeData: any;
+
+  // property to hold price data with date
   @Input() priceData: any;
   moment = moment;
   selected = 3;
@@ -27,7 +30,7 @@ export class PriceVloumeChartComponent implements OnInit {
       left: '3%',
       bottom: '15%',
       right: '2%',
-      top:'2%'
+      top: '2%',
     },
     dataZoom: [
       {
@@ -97,6 +100,13 @@ export class PriceVloumeChartComponent implements OnInit {
     this.option && this.chart.setOption(this.option);
   }
 
+  /**
+   * Update grapgh based on start and end data , search within 3 month data.
+   *
+   * @param  start Date in unix timestamp.
+   * @param  end Date in unix timestamp.
+   * @param  index number to identified applied filter type 1 - Last week , 2- Last Month , 3- last 3 month.
+   */
   dateFilter(start, end, index) {
     const dateArray = [];
     const priceArray = [];
@@ -140,8 +150,18 @@ export class PriceVloumeChartComponent implements OnInit {
     this.chart.setOption(newOption, true);
     this.selected = index;
   }
+
+  /**
+   * Return if given number is persent between two number.
+   *
+   * @param  n number to be present between given numbers.
+   * @param  a first number.
+   * @param  b second number.
+   * @return boolean / true or false.
+   *
+   */
   isBetween(n, a, b) {
     return (n - a) * (n - b) <= 0;
   }
-  onResize(e) {}
+
 }

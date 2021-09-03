@@ -72,7 +72,8 @@ export class DataService {
       name: 'district0x',
       price: null,
       description: '',
-    },{
+    },
+    {
       id: 'axie-infinity',
       symbol: 'axs',
       name: 'axie infinity',
@@ -187,11 +188,13 @@ export class DataService {
   ];
 
   cryptoListDataMap = new Map<string, any>();
-  constructor(private http: HttpClient ,
-    private dbService: NgxIndexedDBService) {}
+  constructor(
+    private http: HttpClient,
+    private dbService: NgxIndexedDBService
+  ) {}
 
   public getCryptoList(): CryptoList[] {
-    return this.cryptolist;
+    return [...this.cryptolist];
   }
 
   public getCryptoSimplePrice(ids, currencies): Observable<any> {
@@ -225,7 +228,14 @@ export class DataService {
     });
   }
 
-  public getMarketChart(id,from,to): Observable<any> {
+  /**
+   *  get market chart data
+   *
+   *  @param  id crypto id
+   *  @param  from from date unix timestamp
+   *  @param  to to date unix timestamp
+   */
+  public getMarketChart(id, from, to): Observable<any> {
     return this.http.get(
       `${CONSTANTS.serverurl}/api/v3/coins/${id}/market_chart/range?vs_currency=inr&from=${from}&to=${to}`,
       (this.httpOptions = {
@@ -236,11 +246,15 @@ export class DataService {
     );
   }
 
-  public graphDataLocalGet(id){
+  /**
+   *  Search crypto data in local db
+   *
+   * @param  id
+   *
+   */
+  public graphDataLocalGet(id) {
     return new Promise((resolve) => {
-      this.dbService
-      .getByIndex('crypto', 'name', id)
-      .subscribe((res: any) => {
+      this.dbService.getByIndex('crypto', 'name', id).subscribe((res: any) => {
         resolve(res);
       });
     });

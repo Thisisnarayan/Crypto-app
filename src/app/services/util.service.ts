@@ -22,14 +22,11 @@ export class UtilService {
   constructor(public toastController: ToastController) {}
 
   // To show error , success , warning message
-  async showToastMessage(header, message, color) {
+  async showToastMessage(message) {
     const toast = await this.toastController.create({
-      header,
       message,
-      position: 'bottom',
-      color,
-      duration: 2000,
+      duration: 2000
     });
-    await toast.present();
+    toast.present();
   }
 }
